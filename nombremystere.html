@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Jeu du Nombre Mystère</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f8ff;
+      text-align: center;
+      padding: 30px;
+    }
+    input, button {
+      font-size: 18px;
+      padding: 10px;
+      margin: 10px;
+    }
+    #message {
+      font-size: 20px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎲 Jeu du Nombre Mystère</h1>
+  <p>Devinez le nombre entre 1 et 100. Vous avez <strong>10 essais</strong> !</p>
+  <input type="number" id="input" min="1" max="100" placeholder="Votre tentative">
+  <button onclick="verifier()">Valider</button>
+  <div id="message"></div>
+
+  <script>
+    const nombreMystere = Math.floor(Math.random() * 100) + 1;
+    let essaisRestants = 10;
+    let gagne = false;
+
+    function verifier() {
+      const input = document.getElementById("input");
+      const message = document.getElementById("message");
+      const tentative = parseInt(input.value);
+
+      if (tentative < 1 || tentative > 100 || isNaN(tentative)) {
+        message.innerText = "⚠️ Veuillez entrer un nombre entre 1 et 100.";
+        return;
+      }
+
+      essaisRestants--;
+
+      if (tentative === nombreMystere) {
+        message.innerText = `🎉 Félicitations ! Vous avez trouvé le nombre mystère en ${10 - essaisRestants} essais !`;
+        input.disabled = true;
+      } else if (essaisRestants === 0) {
+        message.innerText = `💀 Dommage ! Le nombre mystère était ${nombreMystere}.`;
+        input.disabled = true;
+      } else if (tentative < nombreMystere) {
+        message.innerText = `🔺 C'est plus ! Il vous reste ${essaisRestants} essais.`;
+      } else {
+        message.innerText = `🔻 C'est moins ! Il vous reste ${essaisRestants} essais.`;
+      }
+
+      input.value = "";
+      input.focus();
+    }
+  </script>
+</body>
+</html>
